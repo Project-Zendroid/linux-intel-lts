@@ -2275,7 +2275,6 @@ int iwl_mvm_power_mac_dbgfs_read(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 void iwl_mvm_power_vif_assoc(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
 void iwl_mvm_power_uapsd_misbehaving_ap_notif(struct iwl_mvm *mvm,
 					      struct iwl_rx_cmd_buffer *rxb);
-
 #ifdef CONFIG_IWLWIFI_LEDS
 int iwl_mvm_leds_init(struct iwl_mvm *mvm);
 void iwl_mvm_leds_exit(struct iwl_mvm *mvm);
@@ -2477,6 +2476,7 @@ int iwl_mvm_ctdp_command(struct iwl_mvm *mvm, u32 op, u32 budget);
 
 /* vendor commands */
 void iwl_mvm_vendor_cmds_register(struct iwl_mvm *mvm);
+void iwl_mvm_set_wiphy_vendor_commands(struct wiphy *wiphy);
 
 #else
 

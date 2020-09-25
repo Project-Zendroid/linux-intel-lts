@@ -45,12 +45,17 @@
  * @IWL_MVM_VENDOR_CMD_ROAMING_FORBIDDEN_EVENT: notifies if roaming is allowed.
  *	It contains a &IWL_MVM_VENDOR_ATTR_ROAMING_FORBIDDEN and a
  *	&IWL_MVM_VENDOR_ATTR_VIF_ADDR attributes.
+ *
+ * @IWL_MVM_VENDOR_CMD_GET_FW_VERSION: Firmware version
+ * @IWL_MVM_VENDOR_CMD_GET_DRV_VERSION: Driver version
  */
 
 enum iwl_mvm_vendor_cmd {
 	IWL_MVM_VENDOR_CMD_GET_CSME_CONN_INFO			= 0x2d,
 	IWL_MVM_VENDOR_CMD_HOST_GET_OWNERSHIP			= 0x30,
 	IWL_MVM_VENDOR_CMD_ROAMING_FORBIDDEN_EVENT		= 0x32,
+	IWL_MVM_VENDOR_CMD_GET_FW_VERSION			= 0x37,
+	IWL_MVM_VENDOR_CMD_GET_DRV_VERSION			= 0x38,
 };
 
 enum iwl_vendor_auth_akm_mode {
@@ -84,8 +89,13 @@ enum iwl_vendor_auth_akm_mode {
  *
  * @NUM_IWL_MVM_VENDOR_ATTR: number of vendor attributes
  * @MAX_IWL_MVM_VENDOR_ATTR: highest vendor attribute number
-
+ *
+ * @IWL_MVM_VENDOR_ATTR_DRV_VER: string attribute.Driver Version
+ * @IWL_MVM_VENDOR_ATTR_FW_VER: string attribute.Firmware version
+ * @NUM_IWL_MVM_VENDOR_ATTR: number of vendor attributes
+ * @MAX_IWL_MVM_VENDOR_ATTR: highest vendor attribute number
  */
+
 enum iwl_mvm_vendor_attr {
 	__IWL_MVM_VENDOR_ATTR_INVALID				= 0x00,
 	IWL_MVM_VENDOR_ATTR_VIF_ADDR				= 0x02,
@@ -98,6 +108,8 @@ enum iwl_mvm_vendor_attr {
 	IWL_MVM_VENDOR_ATTR_BAND				= 0x69,
 	IWL_MVM_VENDOR_ATTR_COLLOC_CHANNEL			= 0x70,
 	IWL_MVM_VENDOR_ATTR_COLLOC_ADDR				= 0x71,
+	IWL_MVM_VENDOR_ATTR_FW_VER				= 0x79,
+	IWL_MVM_VENDOR_ATTR_DRV_VER				= 0x7a,
 
 	NUM_IWL_MVM_VENDOR_ATTR,
 	MAX_IWL_MVM_VENDOR_ATTR = NUM_IWL_MVM_VENDOR_ATTR - 1,

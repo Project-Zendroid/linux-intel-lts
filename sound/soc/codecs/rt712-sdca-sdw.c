@@ -8,6 +8,7 @@
 
 #include <linux/delay.h>
 #include <linux/device.h>
+#include <linux/dmi.h>
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>
 #include <linux/pm_runtime.h>
@@ -361,6 +362,7 @@ static int rt712_sdca_sdw_probe(struct sdw_slave *slave,
 				const struct sdw_device_id *id)
 {
 	struct regmap *regmap, *mbq_regmap;
+	int ret;
 
 	/* Regmap Initialization */
 	mbq_regmap = devm_regmap_init_sdw_mbq(slave, &rt712_sdca_mbq_regmap);
@@ -371,7 +373,22 @@ static int rt712_sdca_sdw_probe(struct sdw_slave *slave,
 	if (IS_ERR(regmap))
 		return PTR_ERR(regmap);
 
-	return rt712_sdca_init(&slave->dev, regmap, mbq_regmap, slave);
+	ret = rt712_sdca_init(&slave->dev, regmap, mbq_regmap, slave);
+	if (ret < 0)
+		return ret;
+
+	/*
+	 * On the Dell Latitude 7350 Detachable the headset jack is wired to this
+	 * codec and no SoundWire wake is delivered while the link is in clock
+	 * stop. A headset plugged in while the codec is runtime suspended is
+	 * therefore never reported to the audio framework. Keep the codec (and
+	 * its link) powered so jack detection stays armed; the other SoundWire
+	 * links and the speaker amplifiers still suspend normally.
+	 */
+	if (dmi_match(DMI_PRODUCT_NAME, "Latitude 7350 Detachable"))
+		pm_runtime_forbid(&slave->dev);
+
+	return 0;
 }
 
 static int rt712_sdca_sdw_remove(struct sdw_slave *slave)

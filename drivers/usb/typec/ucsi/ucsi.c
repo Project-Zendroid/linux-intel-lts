@@ -1219,6 +1219,15 @@ static void ucsi_handle_connector_change(struct work_struct *work)
 		dev_err(ucsi->dev, "%s: GET_CONNECTOR_STATUS failed (%d)\n",
 			__func__, ret);
 		clear_bit(EVENT_PENDING, &con->ucsi->flags);
+		/*
+		 * On timeout the cached connector status (and therefore the
+		 * power supply "online" property) stays stale, and because the
+		 * event is not acknowledged the EC may not report the next
+		 * change. Retry until the status can be read again instead of
+		 * waiting for another hotplug event.
+		 */
+		if (ret == -ETIMEDOUT)
+			schedule_work(&con->work);
 		goto out_unlock;
 	}
 
